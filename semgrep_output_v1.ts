@@ -344,6 +344,21 @@ export type CliOutputExtra = {
   skipped_rules: SkippedRule[];
 }
 
+export type MatchingDiagnosis = {
+  target: Fpath;
+  unexpected_match_diagnoses: UnexpectedMatchDiagnosis[];
+  unexpected_no_match_diagnoses: UnexpectedNoMatchDiagnosis[];
+}
+
+export type UnexpectedMatchDiagnosis = {
+  matched_text: Snippet;
+  originating_kind: OriginatingNodeKind;
+  originating_text: Snippet;
+  killing_parents: KillingParent[];
+}
+
+export type UnexpectedNoMatchDiagnosis = Todo
+
 export type OriginatingNodeKind =
 | { kind: 'Focus' }
 | { kind: 'Xpattern' }
@@ -361,21 +376,6 @@ export type Snippet = {
 export type KillingParent = {
   killing_parent_kind: KillingParentKind;
   snippet: Snippet;
-}
-
-export type UnexpectedMatchDiagnosis = {
-  matched_text: Snippet;
-  originating_kind: OriginatingNodeKind;
-  originating_text: Snippet;
-  killing_parents: KillingParent[];
-}
-
-export type UnexpectedNoMatchDiagnosis = Todo
-
-export type MatchingDiagnosis = {
-  target: Fpath;
-  unexpected_match_diagnoses: UnexpectedMatchDiagnosis[];
-  unexpected_no_match_diagnoses: UnexpectedNoMatchDiagnosis[];
 }
 
 export type TestsResult = {
@@ -1888,6 +1888,48 @@ export function readCliOutputExtra(x: any, context: any = x): CliOutputExtra {
   };
 }
 
+export function writeMatchingDiagnosis(x: MatchingDiagnosis, context: any = x): any {
+  return {
+    'target': _atd_write_required_field('MatchingDiagnosis', 'target', writeFpath, x.target, x),
+    'unexpected_match_diagnoses': _atd_write_required_field('MatchingDiagnosis', 'unexpected_match_diagnoses', _atd_write_array(writeUnexpectedMatchDiagnosis), x.unexpected_match_diagnoses, x),
+    'unexpected_no_match_diagnoses': _atd_write_required_field('MatchingDiagnosis', 'unexpected_no_match_diagnoses', _atd_write_array(writeUnexpectedNoMatchDiagnosis), x.unexpected_no_match_diagnoses, x),
+  };
+}
+
+export function readMatchingDiagnosis(x: any, context: any = x): MatchingDiagnosis {
+  return {
+    target: _atd_read_required_field('MatchingDiagnosis', 'target', readFpath, x['target'], x),
+    unexpected_match_diagnoses: _atd_read_required_field('MatchingDiagnosis', 'unexpected_match_diagnoses', _atd_read_array(readUnexpectedMatchDiagnosis), x['unexpected_match_diagnoses'], x),
+    unexpected_no_match_diagnoses: _atd_read_required_field('MatchingDiagnosis', 'unexpected_no_match_diagnoses', _atd_read_array(readUnexpectedNoMatchDiagnosis), x['unexpected_no_match_diagnoses'], x),
+  };
+}
+
+export function writeUnexpectedMatchDiagnosis(x: UnexpectedMatchDiagnosis, context: any = x): any {
+  return {
+    'matched_text': _atd_write_required_field('UnexpectedMatchDiagnosis', 'matched_text', writeSnippet, x.matched_text, x),
+    'originating_kind': _atd_write_required_field('UnexpectedMatchDiagnosis', 'originating_kind', writeOriginatingNodeKind, x.originating_kind, x),
+    'originating_text': _atd_write_required_field('UnexpectedMatchDiagnosis', 'originating_text', writeSnippet, x.originating_text, x),
+    'killing_parents': _atd_write_required_field('UnexpectedMatchDiagnosis', 'killing_parents', _atd_write_array(writeKillingParent), x.killing_parents, x),
+  };
+}
+
+export function readUnexpectedMatchDiagnosis(x: any, context: any = x): UnexpectedMatchDiagnosis {
+  return {
+    matched_text: _atd_read_required_field('UnexpectedMatchDiagnosis', 'matched_text', readSnippet, x['matched_text'], x),
+    originating_kind: _atd_read_required_field('UnexpectedMatchDiagnosis', 'originating_kind', readOriginatingNodeKind, x['originating_kind'], x),
+    originating_text: _atd_read_required_field('UnexpectedMatchDiagnosis', 'originating_text', readSnippet, x['originating_text'], x),
+    killing_parents: _atd_read_required_field('UnexpectedMatchDiagnosis', 'killing_parents', _atd_read_array(readKillingParent), x['killing_parents'], x),
+  };
+}
+
+export function writeUnexpectedNoMatchDiagnosis(x: UnexpectedNoMatchDiagnosis, context: any = x): any {
+  return writeTodo(x, context);
+}
+
+export function readUnexpectedNoMatchDiagnosis(x: any, context: any = x): UnexpectedNoMatchDiagnosis {
+  return readTodo(x, context);
+}
+
 export function writeOriginatingNodeKind(x: OriginatingNodeKind, context: any = x): any {
   switch (x.kind) {
     case 'Focus':
@@ -1969,48 +2011,6 @@ export function readKillingParent(x: any, context: any = x): KillingParent {
   return {
     killing_parent_kind: _atd_read_required_field('KillingParent', 'killing_parent_kind', readKillingParentKind, x['killing_parent_kind'], x),
     snippet: _atd_read_required_field('KillingParent', 'snippet', readSnippet, x['snippet'], x),
-  };
-}
-
-export function writeUnexpectedMatchDiagnosis(x: UnexpectedMatchDiagnosis, context: any = x): any {
-  return {
-    'matched_text': _atd_write_required_field('UnexpectedMatchDiagnosis', 'matched_text', writeSnippet, x.matched_text, x),
-    'originating_kind': _atd_write_required_field('UnexpectedMatchDiagnosis', 'originating_kind', writeOriginatingNodeKind, x.originating_kind, x),
-    'originating_text': _atd_write_required_field('UnexpectedMatchDiagnosis', 'originating_text', writeSnippet, x.originating_text, x),
-    'killing_parents': _atd_write_required_field('UnexpectedMatchDiagnosis', 'killing_parents', _atd_write_array(writeKillingParent), x.killing_parents, x),
-  };
-}
-
-export function readUnexpectedMatchDiagnosis(x: any, context: any = x): UnexpectedMatchDiagnosis {
-  return {
-    matched_text: _atd_read_required_field('UnexpectedMatchDiagnosis', 'matched_text', readSnippet, x['matched_text'], x),
-    originating_kind: _atd_read_required_field('UnexpectedMatchDiagnosis', 'originating_kind', readOriginatingNodeKind, x['originating_kind'], x),
-    originating_text: _atd_read_required_field('UnexpectedMatchDiagnosis', 'originating_text', readSnippet, x['originating_text'], x),
-    killing_parents: _atd_read_required_field('UnexpectedMatchDiagnosis', 'killing_parents', _atd_read_array(readKillingParent), x['killing_parents'], x),
-  };
-}
-
-export function writeUnexpectedNoMatchDiagnosis(x: UnexpectedNoMatchDiagnosis, context: any = x): any {
-  return writeTodo(x, context);
-}
-
-export function readUnexpectedNoMatchDiagnosis(x: any, context: any = x): UnexpectedNoMatchDiagnosis {
-  return readTodo(x, context);
-}
-
-export function writeMatchingDiagnosis(x: MatchingDiagnosis, context: any = x): any {
-  return {
-    'target': _atd_write_required_field('MatchingDiagnosis', 'target', writeFpath, x.target, x),
-    'unexpected_match_diagnoses': _atd_write_required_field('MatchingDiagnosis', 'unexpected_match_diagnoses', _atd_write_array(writeUnexpectedMatchDiagnosis), x.unexpected_match_diagnoses, x),
-    'unexpected_no_match_diagnoses': _atd_write_required_field('MatchingDiagnosis', 'unexpected_no_match_diagnoses', _atd_write_array(writeUnexpectedNoMatchDiagnosis), x.unexpected_no_match_diagnoses, x),
-  };
-}
-
-export function readMatchingDiagnosis(x: any, context: any = x): MatchingDiagnosis {
-  return {
-    target: _atd_read_required_field('MatchingDiagnosis', 'target', readFpath, x['target'], x),
-    unexpected_match_diagnoses: _atd_read_required_field('MatchingDiagnosis', 'unexpected_match_diagnoses', _atd_read_array(readUnexpectedMatchDiagnosis), x['unexpected_match_diagnoses'], x),
-    unexpected_no_match_diagnoses: _atd_read_required_field('MatchingDiagnosis', 'unexpected_no_match_diagnoses', _atd_read_array(readUnexpectedNoMatchDiagnosis), x['unexpected_no_match_diagnoses'], x),
   };
 }
 
